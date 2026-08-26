@@ -39,6 +39,10 @@ Exit criteria:
 
 Move local rules out of source code.
 
+Priority: highest next milestone.
+
+Reason: the prototype already proves the safety model, but open-source users need to protect their own ports without editing Python source code.
+
 Add:
 
 ```text

@@ -45,6 +45,44 @@ Important services can be protected. In the current prototype, these are hard-pr
 
 Protected ports are visible in the UI, but stop actions are blocked.
 
+### Prototype Scope and Configurability
+
+The current prototype intentionally keeps the protection rules in source code. This makes the first safety model easy to inspect: protected ports are enforced by the CLI policy layer, not only hidden in the GUI.
+
+This is also the main current limitation. Users who want to protect their own ports must edit the rules in `local_port_guard.py` until the configurable rules file is implemented.
+
+The next planned milestone is a user-owned rules file such as:
+
+```json
+{
+  "protected_ports": [3012, 8012, 5432],
+  "port_rules": {
+    "5432": {
+      "category": "protected",
+      "name": "Local PostgreSQL",
+      "stop_policy": "blocked"
+    }
+  },
+  "command_rules": [
+    {
+      "pattern": "Chrome.*--remote-debugging-port",
+      "category": "browser-tooling",
+      "name": "Chrome remote debugging",
+      "stop_policy": "confirm"
+    }
+  ]
+}
+```
+
+The product direction is therefore:
+
+```text
+safe prototype
+  -> configurable local rules
+  -> GUI protection editor
+  -> audit log
+```
+
 ### launchd-Aware Stopping
 
 On macOS, killing a child process is often the wrong operation. If a service is managed by launchd, the child process may restart immediately.
